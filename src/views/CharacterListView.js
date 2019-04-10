@@ -5,21 +5,21 @@ import { CharacterList } from "../components";
 import Loader from "react-loader-spinner";
 
 class CharacterListView extends React.Component {
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
     this.props.getData();
   }
 
   render() {
     console.log(this.props);
-    if (this.props.fetching) {
-      <Loader type="Bars" color="green" height={80} width={80} />;
-    }
+
     return (
       <div className="CharactersList_wrapper">
+        {this.props.isFetching && (
+          <div className="loader">
+            <Loader s type="Grid" color="black" height={200} width={200} />
+          </div>
+        )}
+        <h1> Star Wars Characters</h1>
         <CharacterList characters={this.props.characters} />
         {this.props.error && <p className="error"> {this.props.error} </p>}
       </div>
@@ -28,9 +28,9 @@ class CharacterListView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  characters: state.charsReducer.characters,
-  isFetching: state.charsReducer.isFetching,
-  error: state.charsReducer.error
+  characters: state.chars.characters,
+  isFetching: state.chars.isFetching,
+  error: state.chars.error
 });
 export default connect(
   mapStateToProps,
